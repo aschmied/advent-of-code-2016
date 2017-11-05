@@ -10,8 +10,8 @@ if __name__ == '__main__':
   commands = parse_commands_from_input(input)
 
   v = vector.Vector()
-  m = vector.Mover(v)
+  ce = vector.CommandExecutor(v)
   for command in commands:
-    m.execute_command(command)
+    ce.execute(command)
 
   print(vector.manhattan_distance_from_origin(v))  

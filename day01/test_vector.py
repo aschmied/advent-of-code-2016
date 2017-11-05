@@ -33,25 +33,25 @@ class TestVector(unittest.TestCase):
   def assertDirection(self, direction):
     self.assertEqual(self.vector.direction(), direction)
 
-class TestMover(unittest.TestCase):
+class TestCommandExecutor(unittest.TestCase):
   def setUp(self):
-    self.mover = vector.Mover(vector.Vector())
+    self.command_executor = vector.CommandExecutor(vector.Vector())
 
   def test_move_left_command(self):
-    self.mover.execute_command('L1')
+    self.command_executor.execute('L1')
     self.assertPosition((-1, 0))
     self.assertDirection(vector.WEST)
 
   def test_move_right_command(self):
-    self.mover.execute_command('R2')
+    self.command_executor.execute('R2')
     self.assertPosition((2, 0))
     self.assertDirection(vector.EAST)
 
   def assertPosition(self, position):
-    self.assertEqual(self.mover.vector().position(), position)
+    self.assertEqual(self.command_executor.vector().position(), position)
 
   def assertDirection(self, direction):
-    self.assertEqual(self.mover.vector().direction(), direction)
+    self.assertEqual(self.command_executor.vector().direction(), direction)
 
 if __name__ == '__main__':
   unittest.main()

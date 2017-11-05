@@ -39,7 +39,7 @@ class Vector(object):
     self._x += distance * step[0]
     self._y += distance * step[1]
 
-class Mover(object):
+class CommandExecutor(object):
   TURNS = {
     'L': lambda vector: vector.turn_left(),
     'R': lambda vector: vector.turn_right(),
@@ -51,8 +51,8 @@ class Mover(object):
   def vector(self):
     return self._vector
 
-  def execute_command(self, move):
-    turn = move[0]
-    distance = int(move[1:])
-    Mover.TURNS[turn](self._vector)
+  def execute(self, command):
+    turn = command[0]
+    distance = int(command[1:])
+    CommandExecutor.TURNS[turn](self._vector)
     self._vector.move(distance)

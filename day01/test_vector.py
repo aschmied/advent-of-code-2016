@@ -33,6 +33,35 @@ class TestVector(unittest.TestCase):
   def assertDirection(self, direction):
     self.assertEqual(self.vector.direction(), direction)
 
+class TestVectorWithPathHistory(unittest.TestCase):
+  def setUp(self):
+    self.vector = vector.VectorWithPathHistory(vector.Vector())
+
+  def test_no_position_visited_twice(self):
+    self.vector.move(2)
+    self.assertFirstPositionVisitedTwice(None)
+
+  def test_one_position_visited_twice(self):
+    self.vector.move(1)
+    self.vector.turn_right()
+    self.vector.turn_right()
+    self.vector.move(1)
+    self.assertFirstPositionVisitedTwice((0, 0))
+
+  def test_multiple_positions_visited_twice(self):
+    self.vector.move(3)
+    self.vector.turn_right()
+    self.vector.move(1)
+    self.vector.turn_right()
+    self.vector.move(1)
+    self.vector.turn_right()
+    self.vector.move(1)
+    self.vector.move(1)
+    self.assertFirstPositionVisitedTwice((0, 2))
+
+  def assertFirstPositionVisitedTwice(self, position):
+    self.assertEqual(self.vector.first_position_visited_twice(), position)
+
 class TestCommandExecutor(unittest.TestCase):
   def setUp(self):
     self.command_executor = vector.CommandExecutor(vector.Vector())

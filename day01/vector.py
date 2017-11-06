@@ -3,8 +3,7 @@ EAST = 1
 SOUTH = 2
 WEST = 3
 
-def manhattan_distance_from_origin(vector):
-  position = vector.position()
+def manhattan_distance_from_origin(position):
   return abs(position[0]) + abs(position[1])
 
 class Vector(object):
@@ -38,6 +37,56 @@ class Vector(object):
     step = Vector.MOVE_OFFSETS[self._direction]
     self._x += distance * step[0]
     self._y += distance * step[1]
+
+class VectorWithPathHistory(Vector):
+  def __init__(self):
+    super(VectorWithPathHistory, self).__init__()
+    self._visited_positions = set()
+    self._visited_positions.add(self.position())
+    self._first_position_visited_twice = None
+
+  def move(self, distance):
+    for _ in xrange(distance):
+      super(VectorWithPathHistory, self).move(1)
+      position = self.position()
+      if self._first_position_visited_twice is None and position in self._visited_positions:
+        self._first_position_visited_twice = position
+      self._visited_positions.add(position)
+
+  def first_position_visited_twice(self):
+    return self._first_position_visited_twice
+
+class VectorWithPathHistory(object):
+  def __init__(self, vector):
+    self._vector = vector
+    self._visited_positions = set([vector.position()])
+    self._first_position_visited_twice = None
+
+  def position(self):
+    return self._vector.position()
+
+  def direction(self):
+    return self._vector.direction()
+
+  def turn_left(self):
+    return self._vector.turn_left()
+
+  def turn_right(self):
+    return self._vector.turn_right()
+
+  def move(self, distance):
+    for _ in xrange(distance):
+      self._vector.move(1)
+      position = self.position()
+      if self._is_first_position_visited_twice(position):
+        self._first_position_visited_twice = position
+      self._visited_positions.add(position)
+
+  def _is_first_position_visited_twice(self, position):
+    return self._first_position_visited_twice is None and position in self._visited_positions
+
+  def first_position_visited_twice(self):
+    return self._first_position_visited_twice
 
 class CommandExecutor(object):
   TURNS = {

@@ -38,24 +38,6 @@ class Vector(object):
     self._x += distance * step[0]
     self._y += distance * step[1]
 
-class VectorWithPathHistory(Vector):
-  def __init__(self):
-    super(VectorWithPathHistory, self).__init__()
-    self._visited_positions = set()
-    self._visited_positions.add(self.position())
-    self._first_position_visited_twice = None
-
-  def move(self, distance):
-    for _ in xrange(distance):
-      super(VectorWithPathHistory, self).move(1)
-      position = self.position()
-      if self._first_position_visited_twice is None and position in self._visited_positions:
-        self._first_position_visited_twice = position
-      self._visited_positions.add(position)
-
-  def first_position_visited_twice(self):
-    return self._first_position_visited_twice
-
 class VectorWithPathHistory(object):
   def __init__(self, vector):
     self._vector = vector

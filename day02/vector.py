@@ -34,7 +34,10 @@ class Vector(object):
     self._direction %= 4
 
   def move_forward(self, distance):
-    step = Vector.MOVE_OFFSETS[self._direction]
+    self.move(self._direction, distance)
+
+  def move(self, direction, distance=1):
+    step = Vector.MOVE_OFFSETS[direction]
     self._x += distance * step[0]
     self._y += distance * step[1]
 

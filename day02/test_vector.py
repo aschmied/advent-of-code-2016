@@ -27,6 +27,16 @@ class TestVector(unittest.TestCase):
     self.assertPosition((-2, 0))
     self.assertDirection(vector.WEST)
 
+  def test_move_south(self):
+    self.vector.move(vector.SOUTH)
+    self.assertPosition((0, -1))
+    self.assertDirection(vector.NORTH)
+
+  def test_move_east(self):
+    self.vector.move(vector.EAST)
+    self.assertPosition((1, 0))
+    self.assertDirection(vector.NORTH)
+
   def assertPosition(self, position):
     self.assertEqual(self.vector.position(), position)
 

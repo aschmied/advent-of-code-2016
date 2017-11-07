@@ -14,14 +14,18 @@ def main():
   v = vector.BoundedVector(vector.Vector(1, 1), 2, 2)
   cle = vector.CommandLineExecutor(vector.CommandExecutor(v))
 
-  code = []
+  sequence = []
   for command_line in command_lines:
     cle.execute(command_line)
     position = cle.vector().position()
-    symbol = POSITION_TO_SYMBOL[position[1]][position[0]]
-    code.append(symbol)
+    sequence.append(position_to_symbol(position))
 
-  print(''.join(code))
+  print(''.join(sequence))
+
+def position_to_symbol(position):
+  x = position[0]
+  y = position[1]
+  return POSITION_TO_SYMBOL[y][x]
 
 if __name__ == '__main__':
   main()

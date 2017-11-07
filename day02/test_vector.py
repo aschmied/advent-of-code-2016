@@ -43,6 +43,29 @@ class TestVector(unittest.TestCase):
   def assertDirection(self, direction):
     self.assertEqual(self.vector.direction(), direction)
 
+class TestBoundedVector(unittest.TestCase):
+  def setUp(self):
+    self._bounded_vector = vector.BoundedVector(vector.Vector(), 1, 2)
+
+  def test_lower_x_bound(self):
+    self._bounded_vector.move(vector.WEST)
+    self.assertPosition((0, 0))
+
+  def test_upper_x_bound(self):
+    self._bounded_vector.move(vector.EAST, 2)
+    self.assertPosition((1, 0))
+
+  def test_lower_y_bound(self):
+    self._bounded_vector.move(vector.SOUTH, 1)
+    self.assertPosition((0, 0))
+
+  def test_upper_y_bound(self):
+    self._bounded_vector.move(vector.NORTH, 3)
+    self.assertPosition((0, 2))
+
+  def assertPosition(self, position):
+    self.assertEqual(self._bounded_vector.position(), position)
+
 class TestCommandExecutor(unittest.TestCase):
   def setUp(self):
     self.command_executor = vector.CommandExecutor(vector.Vector())

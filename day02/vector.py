@@ -41,6 +41,24 @@ class Vector(object):
     self._x += distance * step[0]
     self._y += distance * step[1]
 
+class BoundedVector(object):
+  def __init__(self, vector, x_max=None, y_max=None):
+    self._vector = vector
+    self._x_max = x_max
+    self._y_max = y_max
+
+  def position(self):
+    return self._vector.position()
+
+  def move(self, direction, distance=1):
+    self._vector.move(direction, distance)
+    if self._x_max is not None:
+      x = self._vector._x
+      self._vector._x = min(self._x_max, max(0, x))
+    if self._y_max is not None:
+      y = self._vector._y
+      self._vector._y = min(self._y_max, max(0, y))
+
 class CommandExecutor(object):
   COMMAND_TO_DIRECTION = {
     'U': NORTH,

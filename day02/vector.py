@@ -58,3 +58,14 @@ class CommandExecutor(object):
   def execute(self, command):
     direction = self.COMMAND_TO_DIRECTION[command]
     self._vector.move(direction)
+
+class CommandLineExecutor(object):
+  def __init__(self, command_executor):
+    self._command_executor = command_executor
+
+  def vector(self):
+    return self._command_executor.vector()
+
+  def execute(self, command_line):
+    for command in command_line:
+      self._command_executor.execute(command)

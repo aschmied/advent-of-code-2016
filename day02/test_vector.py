@@ -66,5 +66,24 @@ class TestCommandExecutor(unittest.TestCase):
   def assertPosition(self, position):
     self.assertEqual(self.command_executor.vector().position(), position)
 
+class TestCommandLineExecutor(unittest.TestCase):
+  def setUp(self):
+    self.command_line_executor = vector.CommandLineExecutor(vector.CommandExecutor(vector.Vector()))
+
+  def test_empty_sequence(self):
+    self.command_line_executor.execute('')
+    self.assertPosition((0, 0))
+
+  def test_singleton_sequence(self):
+    self.command_line_executor.execute('U')
+    self.assertPosition((0, 1))
+
+  def test_sequence(self):
+    self.command_line_executor.execute('UURDDDDLLLLL')
+    self.assertPosition((-4, -2))
+
+  def assertPosition(self, position):
+    self.assertEqual(self.command_line_executor.vector().position(), position)
+
 if __name__ == '__main__':
   unittest.main()

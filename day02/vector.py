@@ -3,9 +3,6 @@ EAST = 1
 SOUTH = 2
 WEST = 3
 
-def manhattan_distance_from_origin(position):
-  return abs(position[0]) + abs(position[1])
-
 class Vector(object):
   MOVE_OFFSETS = {
     NORTH: (0, 1),

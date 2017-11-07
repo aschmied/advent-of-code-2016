@@ -33,7 +33,7 @@ class Vector(object):
     self._direction += 1
     self._direction %= 4
 
-  def move(self, distance):
+  def move_forward(self, distance):
     step = Vector.MOVE_OFFSETS[self._direction]
     self._x += distance * step[0]
     self._y += distance * step[1]
@@ -54,4 +54,4 @@ class CommandExecutor(object):
     turn = command[0]
     distance = int(command[1:])
     CommandExecutor.TURNS[turn](self._vector)
-    self._vector.move(distance)
+    self._vector.move_forward(distance)

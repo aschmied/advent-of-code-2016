@@ -66,6 +66,23 @@ class TestBoundedVector(unittest.TestCase):
   def assertPosition(self, position):
     self.assertEqual(self._bounded_vector.position(), position)
 
+class TestAllowedSquares(unittest.TestCase):
+  def setUp(self):
+    self.allowed_squares = vector.AllowedSquares([(1, 0)])
+
+  def test_allowed_square(self):
+    self.assertAllowed((1, 0))
+
+  def test_disallowed_square(self):
+    self.assertDisallowed((0, 1))
+    self.assertDisallowed((0, 0))
+
+  def assertAllowed(self, square):
+    self.assertTrue(self.allowed_squares.is_allowed(square))
+
+  def assertDisallowed(self, square):
+    self.assertFalse(self.allowed_squares.is_allowed(square))
+
 class TestCommandExecutor(unittest.TestCase):
   def setUp(self):
     self.command_executor = vector.CommandExecutor(vector.Vector())

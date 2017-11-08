@@ -56,6 +56,13 @@ class BoundedVector(object):
       y = self._vector._y
       self._vector._y = min(self._y_max, max(0, y))
 
+class AllowedSquares(object):
+  def __init__(self, iterable_of_squares):
+    self.allowed_squares = set(iterable_of_squares)
+
+  def is_allowed(self, square):
+    return square in self.allowed_squares
+
 class CommandExecutor(object):
   COMMAND_TO_DIRECTION = {
     'U': NORTH,

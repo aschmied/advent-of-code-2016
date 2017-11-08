@@ -45,14 +45,20 @@ class TestVector(unittest.TestCase):
 
 class TestBoundedVector(unittest.TestCase):
   def setUp(self):
-    self._bounded_vector = vector.BoundedVector(vector.Vector(), 1, 2)
+    allowed_squares = [
+      (0, 0), (1, 0),
+      (0, 1), (1, 1),
+      (0, 2), (1, 2),
+    ]
+    self._bounded_vector = vector.BoundedVector(vector.Vector(), vector.AllowedSquares(allowed_squares))
 
   def test_lower_x_bound(self):
     self._bounded_vector.move(vector.WEST)
     self.assertPosition((0, 0))
 
   def test_upper_x_bound(self):
-    self._bounded_vector.move(vector.EAST, 2)
+    self._bounded_vector.move(vector.EAST, 1)
+    self._bounded_vector.move(vector.EAST, 1)
     self.assertPosition((1, 0))
 
   def test_lower_y_bound(self):
@@ -60,7 +66,8 @@ class TestBoundedVector(unittest.TestCase):
     self.assertPosition((0, 0))
 
   def test_upper_y_bound(self):
-    self._bounded_vector.move(vector.NORTH, 3)
+    self._bounded_vector.move(vector.NORTH, 2)
+    self._bounded_vector.move(vector.NORTH, 1)
     self.assertPosition((0, 2))
 
   def assertPosition(self, position):

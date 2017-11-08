@@ -1,3 +1,5 @@
+import copy
+
 NORTH = 0
 EAST = 1
 SOUTH = 2
@@ -39,22 +41,18 @@ class Vector(object):
     self._y += distance * step[1]
 
 class BoundedVector(object):
-  def __init__(self, vector, x_max=None, y_max=None):
+  def __init__(self, vector, allowed_squares=None):
     self._vector = vector
-    self._x_max = x_max
-    self._y_max = y_max
+    self._allowed_squares = allowed_squares
 
   def position(self):
     return self._vector.position()
 
   def move(self, direction, distance=1):
-    self._vector.move(direction, distance)
-    if self._x_max is not None:
-      x = self._vector._x
-      self._vector._x = min(self._x_max, max(0, x))
-    if self._y_max is not None:
-      y = self._vector._y
-      self._vector._y = min(self._y_max, max(0, y))
+    new_vector = copy.copy(self._vector)
+    new_vector.move(direction, distance)
+    if self._allowed_squares is None or self._allowed_squares.is_allowed(new_vector.position()):
+      self._vector = new_vector
 
 class AllowedSquares(object):
   def __init__(self, iterable_of_squares):

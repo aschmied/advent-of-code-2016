@@ -63,3 +63,25 @@ class RoomID(object):
         return 1
       return 0
     return sorted(char_count_tuples, cmp)
+
+class ShiftCypher(object):
+  _alphabet_length = 26
+
+  def __init__(self, shift_length):
+    self._shift_length = shift_length
+
+  def decrypt_string(self, string):
+    return ''.join([self.decrypt_char(char) for char in string])
+
+  def decrypt_char(self, char):
+    if char == '-':
+      return ' '
+    encrypted_char_index = self.char_to_int(char)
+    decrypted_char_index = (encrypted_char_index + self._shift_length) % self._alphabet_length
+    return self.int_to_char(decrypted_char_index)
+
+  def char_to_int(self, char):
+    return ord(char) - ord('a')
+
+  def int_to_char(self, int):
+    return chr(int + ord('a'))

@@ -2,7 +2,7 @@ import unittest
 
 import ipv7
 
-class TestPacketParser(unittest.TestCase):
+class TestParser(unittest.TestCase):
   def test_parse_sequences(self):
     self.assertEqual(ipv7.Parser('').sequences(), [])
     self.assertEqual(ipv7.Parser('a').sequences(), ['a'])
@@ -10,12 +10,12 @@ class TestPacketParser(unittest.TestCase):
     self.assertEqual(ipv7.Parser('a[b]c').sequences(), ['a', 'c'])
     self.assertEqual(ipv7.Parser('a[b][c]d').sequences(), ['a', 'd'])
 
-  def test_parse_hypertext_sequences(self):
-    self.assertEqual(ipv7.Parser('').hypertext_sequences(), [])
-    self.assertEqual(ipv7.Parser('a').hypertext_sequences(), [])
-    self.assertEqual(ipv7.Parser('a[b]').hypertext_sequences(), ['b'])
-    self.assertEqual(ipv7.Parser('a[b]c').hypertext_sequences(), ['b'])
-    self.assertEqual(ipv7.Parser('a[b][c]d').hypertext_sequences(), ['b', 'c'])
+  def test_parse_hypernet_sequences(self):
+    self.assertEqual(ipv7.Parser('').hypernet_sequences(), [])
+    self.assertEqual(ipv7.Parser('a').hypernet_sequences(), [])
+    self.assertEqual(ipv7.Parser('a[b]').hypernet_sequences(), ['b'])
+    self.assertEqual(ipv7.Parser('a[b]c').hypernet_sequences(), ['b'])
+    self.assertEqual(ipv7.Parser('a[b][c]d').hypernet_sequences(), ['b', 'c'])
 
 class TestModule(unittest.TestCase):
   def test_is_abba_sequence(self):

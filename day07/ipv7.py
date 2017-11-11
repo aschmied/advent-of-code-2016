@@ -3,37 +3,37 @@ ABBA_LENGTH = 4
 class Parser(object):
   def __init__(self, string):
     self._sequences = []
-    self._hypertext_sequences = []
+    self._hypernet_sequences = []
     self._sequence_builder = []
-    self._is_hypertext = False
+    self._is_hypernet = False
     self._parse(string)
 
   def _parse(self, string):
     for char in string:
       if char == '[':
-        self._start_hypertext_sequence()
+        self._start_hypernet_sequence()
       elif char == ']':
-        self._end_hypertext_sequence()
+        self._end_hypernet_sequence()
       else:
         self._append_char_to_sequence_builder(char)
     self._end_input()
 
-  def _start_hypertext_sequence(self):
-    if not self._is_hypertext:
+  def _start_hypernet_sequence(self):
+    if not self._is_hypernet:
       self._finish_sequence(self._sequences)
-    self._is_hypertext = True
+    self._is_hypernet = True
 
-  def _end_hypertext_sequence(self):
-    if self._is_hypertext:
-      self._finish_sequence(self._hypertext_sequences)
-    self._is_hypertext = False
+  def _end_hypernet_sequence(self):
+    if self._is_hypernet:
+      self._finish_sequence(self._hypernet_sequences)
+    self._is_hypernet = False
 
   def _append_char_to_sequence_builder(self, char):
     self._sequence_builder += char
 
   def _end_input(self):
-    if self._is_hypertext:
-      self._finish_sequence(self._hypertext_sequences)
+    if self._is_hypernet:
+      self._finish_sequence(self._hypernet_sequences)
     else:
       self._finish_sequence(self._sequences)
 
@@ -46,8 +46,8 @@ class Parser(object):
   def sequences(self):
     return self._sequences
 
-  def hypertext_sequences(self):
-    return self._hypertext_sequences
+  def hypernet_sequences(self):
+    return self._hypernet_sequences
 
 def contains_abba_sequence(sequence):
   n = len(sequence)

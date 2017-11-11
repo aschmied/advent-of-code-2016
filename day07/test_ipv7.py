@@ -16,3 +16,16 @@ class TestPacketParser(unittest.TestCase):
     self.assertEqual(ipv7.Parser('a[b]').hypertext_sequences(), ['b'])
     self.assertEqual(ipv7.Parser('a[b]c').hypertext_sequences(), ['b'])
     self.assertEqual(ipv7.Parser('a[b][c]d').hypertext_sequences(), ['b', 'c'])
+
+class TestModule(unittest.TestCase):
+  def test_is_abba_sequence(self):
+    self.assertNotABBA('')
+    self.assertNotABBA('abcba')
+    self.assertNotABBA('aaaa')
+    self.assertIsABBA('abba')
+
+  def assertIsABBA(self, sequence):
+    self.assertTrue(ipv7.is_abba_sequence(sequence))
+
+  def assertNotABBA(self, sequence):
+    self.assertFalse(ipv7.is_abba_sequence(sequence))

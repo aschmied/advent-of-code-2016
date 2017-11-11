@@ -38,3 +38,22 @@ class Parser(object):
 
   def hypertext_sequences(self):
     return self._hypertext_sequences
+
+def contains_abba_sequence(sequence):
+  n = len(sequence)
+  for start_index in xrange(n):
+    end_index = start_index + 4
+    if end_index > n:
+      return False
+    if is_abba_sequence(sequence[start_index:end_index]):
+      return True
+  return False
+
+def is_abba_sequence(sequence):
+  if not len(sequence) == 4:
+    return False
+  if not sequence[0:2] == sequence[3:1:-1]:
+    return False
+  if sequence[0] == sequence[1]:
+    return False
+  return True

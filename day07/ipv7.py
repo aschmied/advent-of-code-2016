@@ -1,3 +1,5 @@
+import util
+
 ABBA_LENGTH = 4
 
 class Parser(object):
@@ -58,18 +60,21 @@ class Address(object):
   def __init__(self, supernet_sequences, hypernet_sequences):
     self._supernet_sequences = supernet_sequences
     self._hypernet_sequences = hypernet_sequences
+    self._supernet_abba_sequences = util.map_flatten(self._find_abba_sequences, supernet_sequences)
+    self._hypernet_abba_sequences = util.map_flatten(self._find_abba_sequences, hypernet_sequences)
+
+  def _find_abba_sequences(self, sequence):
+    sequences = []
+    n = len(sequence)
+    for start_index in xrange(n - ABBA_LENGTH + 1):
+      end_index = start_index + ABBA_LENGTH
+      candidate = sequence[start_index:end_index]
+      if is_abba_sequence(candidate):
+        sequences.append(candidate)
+    return sequences
 
   def supports_tls(self):
-    return (any(map(contains_abba_sequence, self._supernet_sequences)) and
-        not any(map(contains_abba_sequence, self._hypernet_sequences)))
-
-def contains_abba_sequence(sequence):
-  n = len(sequence)
-  for start_index in xrange(n - ABBA_LENGTH + 1):
-    end_index = start_index + ABBA_LENGTH
-    if is_abba_sequence(sequence[start_index:end_index]):
-      return True
-  return False
+    return len(self._supernet_abba_sequences) > 0 and len(self._hypernet_abba_sequences) == 0
 
 def is_abba_sequence(sequence):
   return (len(sequence) == ABBA_LENGTH and

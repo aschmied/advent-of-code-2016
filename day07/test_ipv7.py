@@ -3,12 +3,12 @@ import unittest
 import ipv7
 
 class TestParser(unittest.TestCase):
-  def test_parse_sequences(self):
-    self.assertEqual(ipv7.Parser('').sequences(), [])
-    self.assertEqual(ipv7.Parser('a').sequences(), ['a'])
-    self.assertEqual(ipv7.Parser('a[b]').sequences(), ['a'])
-    self.assertEqual(ipv7.Parser('a[b]c').sequences(), ['a', 'c'])
-    self.assertEqual(ipv7.Parser('a[b][c]d').sequences(), ['a', 'd'])
+  def test_parse_supernet_sequences(self):
+    self.assertEqual(ipv7.Parser('').supernet_sequences(), [])
+    self.assertEqual(ipv7.Parser('a').supernet_sequences(), ['a'])
+    self.assertEqual(ipv7.Parser('a[b]').supernet_sequences(), ['a'])
+    self.assertEqual(ipv7.Parser('a[b]c').supernet_sequences(), ['a', 'c'])
+    self.assertEqual(ipv7.Parser('a[b][c]d').supernet_sequences(), ['a', 'd'])
 
   def test_parse_hypernet_sequences(self):
     self.assertEqual(ipv7.Parser('').hypernet_sequences(), [])
@@ -35,8 +35,8 @@ class TestAddress(unittest.TestCase):
     self.assertSupportsTLS(['abba', 'kdj'], ['aabbc', 'xyz'])
     self.assertNotSupportsTLS(['abba', 'baab'], ['abba'])
 
-  def assertSupportsTLS(self, sequences, hypernet_sequences):
-    self.assertTrue(ipv7.Address(sequences, hypernet_sequences).supports_tls())
+  def assertSupportsTLS(self, supernet_sequences, hypernet_sequences):
+    self.assertTrue(ipv7.Address(supernet_sequences, hypernet_sequences).supports_tls())
 
-  def assertNotSupportsTLS(self, sequences, hypernet_sequences):
-    self.assertFalse(ipv7.Address(sequences, hypernet_sequences).supports_tls())
+  def assertNotSupportsTLS(self, supernet_sequences, hypernet_sequences):
+    self.assertFalse(ipv7.Address(supernet_sequences, hypernet_sequences).supports_tls())

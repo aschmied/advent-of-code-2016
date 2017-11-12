@@ -2,7 +2,7 @@ ABBA_LENGTH = 4
 
 class Parser(object):
   def __init__(self, string):
-    self._sequences = []
+    self._supernet_sequences = []
     self._hypernet_sequences = []
     self._sequence_builder = []
     self._is_hypernet = False
@@ -20,7 +20,7 @@ class Parser(object):
 
   def _start_hypernet_sequence(self):
     if not self._is_hypernet:
-      self._finish_sequence(self._sequences)
+      self._finish_sequence(self._supernet_sequences)
     self._is_hypernet = True
 
   def _end_hypernet_sequence(self):
@@ -35,7 +35,7 @@ class Parser(object):
     if self._is_hypernet:
       self._finish_sequence(self._hypernet_sequences)
     else:
-      self._finish_sequence(self._sequences)
+      self._finish_sequence(self._supernet_sequences)
 
   def _finish_sequence(self, sequences):
     if len(self._sequence_builder) == 0:
@@ -43,8 +43,8 @@ class Parser(object):
     sequences.append(''.join(self._sequence_builder))
     self._sequence_builder = []
 
-  def sequences(self):
-    return self._sequences
+  def supernet_sequences(self):
+    return self._supernet_sequences
 
   def hypernet_sequences(self):
     return self._hypernet_sequences
@@ -53,14 +53,14 @@ class Address(object):
   @classmethod
   def parse(cls, string):
     parser = Parser(string)
-    return cls(parser.sequences(), parser.hypernet_sequences())
+    return cls(parser.supernet_sequences(), parser.hypernet_sequences())
 
-  def __init__(self, sequences, hypernet_sequences):
-    self._sequences = sequences
+  def __init__(self, supernet_sequences, hypernet_sequences):
+    self._supernet_sequences = supernet_sequences
     self._hypernet_sequences = hypernet_sequences
 
   def supports_tls(self):
-    return (any(map(contains_abba_sequence, self._sequences)) and
+    return (any(map(contains_abba_sequence, self._supernet_sequences)) and
         not any(map(contains_abba_sequence, self._hypernet_sequences)))
 
 def contains_abba_sequence(sequence):

@@ -29,3 +29,14 @@ class TestModule(unittest.TestCase):
 
   def assertNotABBA(self, sequence):
     self.assertFalse(ipv7.is_abba_sequence(sequence))
+
+class TestAddress(unittest.TestCase):
+  def test_supports_tls(self):
+    self.assertSupportsTLS(['abba', 'kdj'], ['aabbc', 'xyz'])
+    self.assertNotSupportsTLS(['abba', 'baab'], ['abba'])
+
+  def assertSupportsTLS(self, sequences, hypernet_sequences):
+    self.assertTrue(ipv7.Address(sequences, hypernet_sequences).supports_tls())
+
+  def assertNotSupportsTLS(self, sequences, hypernet_sequences):
+    self.assertFalse(ipv7.Address(sequences, hypernet_sequences).supports_tls())

@@ -1,6 +1,7 @@
 import util
 
 ABBA_LENGTH = 4
+ABA_LENGTH = 3
 
 class Parser(object):
   def __init__(self, string):
@@ -64,19 +65,23 @@ class Address(object):
     self._hypernet_abba_sequences = util.map_flatten(self._find_abba_sequences, hypernet_sequences)
 
   def _find_abba_sequences(self, sequence):
-    sequences = []
+    return self._find_subsequences(ABBA_LENGTH, sequence)
+
+  def _find_subsequences(self, subsequence_length, sequence):
+    subsequences = []
     n = len(sequence)
-    for start_index in xrange(n - ABBA_LENGTH + 1):
-      end_index = start_index + ABBA_LENGTH
+    for start_index in xrange(n - subsequence_length + 1):
+      end_index = start_index + subsequence_length
       candidate = sequence[start_index:end_index]
-      if is_abba_sequence(candidate):
-        sequences.append(candidate)
-    return sequences
+      if is_valid_subsequence(subsequence_length, candidate):
+        subsequences.append(candidate)
+    return subsequences
 
   def supports_tls(self):
     return len(self._supernet_abba_sequences) > 0 and len(self._hypernet_abba_sequences) == 0
 
-def is_abba_sequence(sequence):
-  return (len(sequence) == ABBA_LENGTH and
-      sequence[0:2] == sequence[3:1:-1] and
-      sequence[0] != sequence[1])
+def is_valid_subsequence(subsequence_length, subsequence):
+  return (len(subsequence) == subsequence_length and
+      subsequence[0] == subsequence[-1] and
+      subsequence[1] == subsequence[-2] and
+      subsequence[0] != subsequence[1])

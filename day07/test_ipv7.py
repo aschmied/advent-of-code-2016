@@ -20,15 +20,27 @@ class TestParser(unittest.TestCase):
 class TestModule(unittest.TestCase):
   def test_is_abba_sequence(self):
     self.assertNotABBA('')
-    self.assertNotABBA('abcba')
+    self.assertNotABBA('bcba')
     self.assertNotABBA('aaaa')
     self.assertIsABBA('abba')
 
+  def test_is_aba_sequence(self):
+    self.assertNotABA('')
+    self.assertNotABA('aaa')
+    self.assertNotABA('bba')
+    self.assertIsABA('bcb')
+
+  def assertIsABA(self, sequence):
+    self.assertTrue(ipv7.is_valid_subsequence(ipv7.ABA_LENGTH, sequence))
+
+  def assertNotABA(self, sequence):
+    self.assertFalse(ipv7.is_valid_subsequence(ipv7.ABA_LENGTH, sequence))
+
   def assertIsABBA(self, sequence):
-    self.assertTrue(ipv7.is_abba_sequence(sequence))
+    self.assertTrue(ipv7.is_valid_subsequence(ipv7.ABBA_LENGTH, sequence))
 
   def assertNotABBA(self, sequence):
-    self.assertFalse(ipv7.is_abba_sequence(sequence))
+    self.assertFalse(ipv7.is_valid_subsequence(ipv7.ABBA_LENGTH, sequence))
 
 class TestAddress(unittest.TestCase):
   def test_supports_tls(self):

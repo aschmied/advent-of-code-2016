@@ -63,9 +63,14 @@ class Address(object):
     self._hypernet_sequences = hypernet_sequences
     self._supernet_abba_sequences = util.map_flatten(self._find_abba_sequences, supernet_sequences)
     self._hypernet_abba_sequences = util.map_flatten(self._find_abba_sequences, hypernet_sequences)
+    self._supernet_aba_sequences = util.map_flatten(self._find_aba_sequences, supernet_sequences)
+    self._hypernet_aba_sequences = util.map_flatten(self._find_aba_sequences, hypernet_sequences)
 
   def _find_abba_sequences(self, sequence):
     return self._find_subsequences(ABBA_LENGTH, sequence)
+
+  def _find_aba_sequences(self, sequence):
+    return self._find_subsequences(ABA_LENGTH, sequence)
 
   def _find_subsequences(self, subsequence_length, sequence):
     subsequences = []
@@ -79,6 +84,20 @@ class Address(object):
 
   def supports_tls(self):
     return len(self._supernet_abba_sequences) > 0 and len(self._hypernet_abba_sequences) == 0
+
+  # Complexity is O(n^2) for aba's stored in lists, but the
+  # lists in this problem are short.
+  def supports_ssl(self):
+    for aba in self._supernet_aba_sequences:
+      bab = self.aba_to_bab(aba)
+      if bab in self._hypernet_aba_sequences:
+        return True
+    return False
+
+  def aba_to_bab(self, aba):
+    a = aba[0]
+    b = aba[1]
+    return b + a + b
 
 def is_valid_subsequence(subsequence_length, subsequence):
   return (len(subsequence) == subsequence_length and

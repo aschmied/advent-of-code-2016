@@ -47,8 +47,20 @@ class TestAddress(unittest.TestCase):
     self.assertSupportsTLS(['abba', 'kdj'], ['aabbc', 'xyz'])
     self.assertNotSupportsTLS(['abba', 'baab'], ['abba'])
 
+  def test_supports_ssl(self):
+    self.assertNotSupportsSSL([], [])
+    self.assertNotSupportsSSL(['abba'], ['zzz'])
+    self.assertNotSupportsSSL(['zzzabbazzaba'], ['abba'])
+    self.assertSupportsSSL(['aba'], ['bab'])
+
   def assertSupportsTLS(self, supernet_sequences, hypernet_sequences):
     self.assertTrue(ipv7.Address(supernet_sequences, hypernet_sequences).supports_tls())
 
   def assertNotSupportsTLS(self, supernet_sequences, hypernet_sequences):
     self.assertFalse(ipv7.Address(supernet_sequences, hypernet_sequences).supports_tls())
+
+  def assertSupportsSSL(self, supernet_sequences, hypernet_sequences):
+    self.assertTrue(ipv7.Address(supernet_sequences, hypernet_sequences).supports_ssl())
+
+  def assertNotSupportsSSL(self, supernet_sequences, hypernet_sequences):
+    self.assertFalse(ipv7.Address(supernet_sequences, hypernet_sequences).supports_ssl())

@@ -42,23 +42,23 @@ class TestRectInstruction(ScreenTestCase):
     self.assertEqual(inst._width, 3)
     self.assertEqual(inst._height, 2)
 
-def TestRotateRowInstruction(ScreenTestCase):
+class TestRotateRowInstruction(ScreenTestCase):
   def test_shift(self):
     self.screen.set(0, 0, screen.ON_VALUE)
     self.screen.set(2, 0, screen.ON_VALUE)
-    screen.RotateRowInscruction(0, 1).execute(self.screen)
+    screen.RotateRowInstruction(0, 1).execute(self.screen)
     self.assertOn(0, 0)
     self.assertOn(1, 0)
     self.assertOff(2, 0)
 
   def test_shift_larger_than_width(self):
     self.screen.set(0, 0, screen.ON_VALUE)
-    screen.RotateRowInscruction(0, 5).execute(self.screen)
+    screen.RotateRowInstruction(0, 5).execute(self.screen)
     self.assertOff(0, 0)
     self.assertOff(1, 0)
     self.assertOn(2, 0)
 
-def TestRotateColInstruction(ScreenTestCase):
+class TestRotateColInstruction(ScreenTestCase):
   def test_shift(self):
     self.screen.set(2, 0, screen.ON_VALUE)
     screen.RotateColInstruction(2, 1).execute(self.screen)
@@ -70,13 +70,13 @@ def TestRotateColInstruction(ScreenTestCase):
     self.assertOn(2, 0)
     self.assertOff(2, 1)
 
-def TestRotateInstruction(ScreenTestCase):
+class TestRotateInstruction(ScreenTestCase):
   def test_from_args_for_row(self):
-    inst = RotateInstruction.from_args(['y=3', 'by', '4'])
+    inst = screen.RotateInstruction.from_args(['row', 'y=3', 'by', '4'])
     self.assertEqual(inst._y, 3)
     self.assertEqual(inst.shift_count(), 4)
 
   def test_from_args_for_col(self):
-    inst = RotateInstruction.from_args(['x=3', 'by', '4'])
+    inst = screen.RotateInstruction.from_args(['col', 'x=3', 'by', '4'])
     self.assertEqual(inst._x, 3)
     self.assertEqual(inst.shift_count(), 4)

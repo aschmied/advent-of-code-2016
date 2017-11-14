@@ -77,13 +77,13 @@ class TestRotateInstruction(ScreenTestCase):
     self.assertEqual(inst.shift_count(), 4)
 
   def test_from_args_for_col(self):
-    inst = screen.RotateInstruction.from_args(['col', 'x=3', 'by', '4'])
+    inst = screen.RotateInstruction.from_args(['column', 'x=3', 'by', '4'])
     self.assertEqual(inst._x, 3)
     self.assertEqual(inst.shift_count(), 4)
 
 class TestScriptParser(unittest.TestCase):
   def test_parse(self):
-    input = 'rect 2x2\nrotate row y=1 by 2\nrotate col x=3 by 4\n'
+    input = 'rect 2x2\nrotate row y=1 by 2\nrotate column x=3 by 4\n'
     parser = screen.ScriptParser(input)
     instructions = parser.instructions()
     self.assertTrue(isinstance(instructions[0], screen.RectInstruction))

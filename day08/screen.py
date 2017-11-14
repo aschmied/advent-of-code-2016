@@ -1,5 +1,5 @@
 ON_VALUE = '#'
-OFF_VALUE = '.'
+OFF_VALUE = ' '
 
 class Screen(object):
   def __init__(self, width, height):
@@ -18,6 +18,13 @@ class Screen(object):
 
   def height(self):
     return self._height
+
+  def dump(self):
+    for y in xrange(self._height):
+      row = []
+      for x in xrange(self._width):
+        row.append(self.get(x, y))
+      print ''.join(row)
 
   def _coords_to_index(self, x, y):
     return y * self._width + x
@@ -52,8 +59,10 @@ class RotateInstruction(object):
     shift_count = int(shift_count_string)
     if list_of_args[0] == 'row':
       return RotateRowInstruction(row_col_offset, shift_count)
-    if list_of_args[0] == 'col':
+    elif list_of_args[0] == 'column':
       return RotateColInstruction(row_col_offset, shift_count)
+    else:
+      raise ValueError(list_of_args[0] + ' is invalid')
 
   @staticmethod
   def text():

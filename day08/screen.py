@@ -13,6 +13,12 @@ class Screen(object):
   def set(self, x, y, value):
     self._pixels[self._coords_to_index(x, y)] = value
 
+  def width(self):
+    return self._width
+
+  def height(self):
+    return self._height
+
   def _coords_to_index(self, x, y):
     return y * self._width + x
 
@@ -40,15 +46,22 @@ class RotateInstruction(object):
   @staticmethod
   def from_args(list_of_args):
     row_col_offset_string = list_of_args[1].split('=')[1]
+    row_col_offset = int(row_col_offset_string)
     shift_count_string = list_of_args[3]
+    shift_count = int(shift_count_string)
     if args[0] == 'row':
-      return RotateRowInstruction(int(row_col_offset_string), int(shift_count_string))
+      return RotateRowInstruction(row_col_offset, shift_count)
+    if args[0] == 'col':
+      return RotateColInstruction(row_col_offset, shift_count)
 
   def execute(self, screen):
     tmp = self._extract_row_or_col_to_temp_for_rotation(screen)
     shift_count = self.shift_count() % len(tmp)
     tmp = tmp[-shift_count:] + tmp[:-shift_count]
     self._write_temp_back_to_screen(screen, tmp)
+
+  def text(self):
+    return 'rotate'
 
 class RotateRowInstruction(object):
   def __init__(self, y, shift_count):
@@ -62,8 +75,20 @@ class RotateRowInstruction(object):
     for x in xrange(screen.width()):
       screen.set(x, self._y, tmp[x])
 
-  def text(self):
-    return 'rotate'
-
   def shift_count(self):
     return self._shift_count
+
+class RotateColInstruction(object):
+  def __init__(self, x, shift_count):
+    self._x = x
+    self._shift_count = shift_count
+
+  def _extract_row_or_col_to_temp_for_rotation(screen):
+    return [screen.get(self._x, y) for y in xrange(screen.height())]
+
+  def _write_temp_back_to_screen(screen, tmp):
+    for y in xrange(screen.height()):
+      screen.set(y, tmp[y])
+
+  def shift_count(self):
+    return _shift_count

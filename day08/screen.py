@@ -57,9 +57,11 @@ class RotateInstruction(object):
   @staticmethod
   def from_args(list_of_args):
     row_col_offset_string = list_of_args[1].split('=')[1]
-    row_col_offset = int(row_col_offset_string)
     shift_count_string = list_of_args[3]
+
+    row_col_offset = int(row_col_offset_string)
     shift_count = int(shift_count_string)
+    
     if list_of_args[0] == 'row':
       return RotateRowInstruction(row_col_offset, shift_count)
     elif list_of_args[0] == 'column':
@@ -74,8 +76,11 @@ class RotateInstruction(object):
   def execute(self, screen):
     tmp = self._extract_row_or_col_to_temp_for_rotation(screen)
     shift_count = self.shift_count() % len(tmp)
-    tmp = tmp[-shift_count:] + tmp[:-shift_count]
+    tmp = self._rotate(tmp, shift_count)
     self._write_temp_back_to_screen(screen, tmp)
+
+  def _rotate(self, list, count):
+    return list[-count:] + list[:-count]
 
 class RotateRowInstruction(RotateInstruction):
   def __init__(self, y, shift_count):
@@ -107,12 +112,12 @@ class RotateColInstruction(RotateInstruction):
   def shift_count(self):
     return self._shift_count
 
-_INSTRUCTION_LOOKUP = {
-  RectInstruction.text(): RectInstruction,
-  RotateInstruction.text(): RotateInstruction
-}
-
 class ScriptParser(object):
+  _INSTRUCTION_LOOKUP = {
+    RectInstruction.text(): RectInstruction,
+    RotateInstruction.text(): RotateInstruction
+  }
+
   def __init__(self, input):
     self._lines = input.strip().split('\n')
     self._instructions = []
@@ -128,7 +133,7 @@ class ScriptParser(object):
   def _instruction_for_args(self, args):
     instruction_name = args[0]
     instruction_args = args[1:]
-    return _INSTRUCTION_LOOKUP[instruction_name].from_args(instruction_args)
+    return self._INSTRUCTION_LOOKUP[instruction_name].from_args(instruction_args)
 
   def instructions(self):
     return self._instructions

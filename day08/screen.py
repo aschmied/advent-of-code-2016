@@ -19,7 +19,10 @@ class Screen(object):
   def height(self):
     return self._height
 
-  def dump(self):
+  def count_enabled(self):
+    return self._pixels.count(ON_VALUE)
+
+  def draw(self):
     for y in xrange(self._height):
       row = []
       for x in xrange(self._width):

@@ -30,6 +30,10 @@ class RectInstruction(object):
     height = int(height_string)
     return cls(width, height)
 
+  @staticmethod
+  def text():
+    return 'rect'
+
   def __init__(self, width, height):
     self._width = width
     self._height = height
@@ -38,9 +42,6 @@ class RectInstruction(object):
     for y in xrange(self._height):
       for x in xrange(self._width):
         screen.set(x, y, ON_VALUE)
-
-  def text(self):
-    return 'rect'
 
 class RotateInstruction(object):
   @staticmethod
@@ -54,14 +55,15 @@ class RotateInstruction(object):
     if list_of_args[0] == 'col':
       return RotateColInstruction(row_col_offset, shift_count)
 
+  @staticmethod
+  def text():
+    return 'rotate'
+
   def execute(self, screen):
     tmp = self._extract_row_or_col_to_temp_for_rotation(screen)
     shift_count = self.shift_count() % len(tmp)
     tmp = tmp[-shift_count:] + tmp[:-shift_count]
     self._write_temp_back_to_screen(screen, tmp)
-
-  def text(self):
-    return 'rotate'
 
 class RotateRowInstruction(RotateInstruction):
   def __init__(self, y, shift_count):
@@ -92,3 +94,29 @@ class RotateColInstruction(RotateInstruction):
 
   def shift_count(self):
     return self._shift_count
+
+_INSTRUCTION_LOOKUP = {
+  RectInstruction.text(): RectInstruction,
+  RotateInstruction.text(): RotateInstruction
+}
+
+class ScriptParser(object):
+  def __init__(self, input):
+    self._lines = input.strip().split('\n')
+    self._instructions = []
+    self._parse_lines()
+
+  def _parse_lines(self):
+    for line in self._lines:
+      if len(line.strip()) == 0:
+        continue
+      args = line.split(' ')
+      self._instructions.append(self._instruction_for_args(args))
+
+  def _instruction_for_args(self, args):
+    instruction_name = args[0]
+    instruction_args = args[1:]
+    return _INSTRUCTION_LOOKUP[instruction_name].from_args(instruction_args)
+
+  def instructions(self):
+    return self._instructions

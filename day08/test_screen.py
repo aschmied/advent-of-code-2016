@@ -80,3 +80,12 @@ class TestRotateInstruction(ScreenTestCase):
     inst = screen.RotateInstruction.from_args(['col', 'x=3', 'by', '4'])
     self.assertEqual(inst._x, 3)
     self.assertEqual(inst.shift_count(), 4)
+
+class TestScriptParser(unittest.TestCase):
+  def test_parse(self):
+    input = 'rect 2x2\nrotate row y=1 by 2\nrotate col x=3 by 4\n'
+    parser = screen.ScriptParser(input)
+    instructions = parser.instructions()
+    self.assertTrue(isinstance(instructions[0], screen.RectInstruction))
+    self.assertTrue(isinstance(instructions[1], screen.RotateRowInstruction))
+    self.assertTrue(isinstance(instructions[2], screen.RotateColInstruction))

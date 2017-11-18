@@ -6,6 +6,5 @@ def main():
   print(calculator.first_door_code())
   print(calculator.second_door_code())
 
-
 if __name__ == '__main__':
   main()

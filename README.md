@@ -4,6 +4,15 @@ This repo contains my solutions to the [Advent of Code 2016](http://adventofcode
 
 # My Favourite Solutions
 
+## [Day 7](http://adventofcode.com/2016/day/7)
+
+Because it contains this method:
+
+    def aba_to_bab(self, aba):
+      a = aba[0]
+      b = aba[1]
+      return b + a + b
+
 ## [Day 8](http://adventofcode.com/2016/day/8)
 
 There is a small LCD screen controlled by a simple scripting language and we need to determine the text on the screen after a given sequence of instructions.

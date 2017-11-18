@@ -16,7 +16,7 @@ def parse_input(input):
 
 def parse_line(line):
   ints_as_strings = filter(None, line.strip().split(' '))
-  return map(lambda s: int(s), ints_as_strings)
+  return map(int, ints_as_strings)
 
 def count_triangles_in_horizontal_triples(matrix):
   number_triangles = 0

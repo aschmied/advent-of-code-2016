@@ -9,7 +9,7 @@ VECTOR_DOMAIN_1 = [
 POSITION_TO_SYMBOL_MAP_1 = {
   2: "123",
   1: "456",
-  0: "012",
+  0: "789",
 }
 
 VECTOR_DOMAIN_2 = [

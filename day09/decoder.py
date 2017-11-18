@@ -68,7 +68,7 @@ class Version2Decoder(object):
     repeat_command, leftover_tail = self._split_on_first_occurrence(tail, ')')
     return head, repeat_command, leftover_tail
 
-  def _split_on_first_occurrence(self, string, char):
+  def _split_at_first_occurrence(self, string, char):
     l = string.split(char, 1)
     if len(l) == 1:
       return l[0], None

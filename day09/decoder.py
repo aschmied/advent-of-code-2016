@@ -1,15 +1,19 @@
-class Decoder(object):
-  def __init__(self, coded):
-    self._coded = coded
-    self._citr = iter(coded)
-    self._decoded_chars = []
+def get(protocol_version):
+  return Version1Decoder()
 
-  def decode(self):
+class Version1Decoder(object):
+  def decode(self, coded):
+    self.init(coded)
     try:
       self._decode_chars()
     except StopIteration:
       pass
     return ''.join(self._decoded_chars)
+
+  def init(self, coded):
+    self._coded = coded
+    self._citr = iter(coded)
+    self._decoded_chars = []
 
   def _decode_chars(self):
     while True:

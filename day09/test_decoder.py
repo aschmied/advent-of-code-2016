@@ -2,7 +2,11 @@ import unittest
 
 import decoder
 
-class TestDecoder(unittest.TestCase):
+class TestV1Decoder(unittest.TestCase):
+  def setUp(self):
+    self.protocol_version = 1
+    self.decoder = decoder.get(self.protocol_version)
+
   def test_decode(self):
     self.assertDecoded("", "")
     self.assertDecoded("a", "a")
@@ -14,4 +18,4 @@ class TestDecoder(unittest.TestCase):
     self.assertDecoded("(3x2)(2x2)", "(2x(2x2)")
 
   def assertDecoded(self, coded, decoded):
-    self.assertEqual(decoder.Decoder(coded).decode(), decoded)
+    self.assertEqual(self.decoder.decode(coded), decoded)

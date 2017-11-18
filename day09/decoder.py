@@ -53,23 +53,28 @@ class Version2Decoder(object):
     return self._len_decoded(coded)
 
   def _len_decoded(self, coded):
-    start_of_repeat = coded.find('(')
-    if start_of_repeat == -1:
+    repeat_start_index, repeat_end_index = self._find_first_repeat_command(coded)
+    if repeat_start_index == -1:
       return len(coded)
 
-    count_before_repeat = start_of_repeat
-
-    end_of_repeat = coded.find(')', start_of_repeat + 1)
-    repeat_command_string = coded[start_of_repeat + 1:end_of_repeat]
+    len_before_repeat_command = repeat_start_index
+    repeat_command_string = coded[repeat_start_index + 1:repeat_end_index]
 
     string_length, repeat_count = _parse_repeat_command(repeat_command_string)
-    repeated_string_start_index = end_of_repeat + 1
+    repeated_string_start_index = repeat_end_index + 1
     repeated_string_end_index = repeated_string_start_index + string_length
-    repeated_string = coded[repeated_string_start_index:repeated_string_end_index]
 
+    repeated_string = coded[repeated_string_start_index:repeated_string_end_index]
     remaining_string = coded[repeated_string_end_index:]
 
-    return count_before_repeat + repeat_count * self._len_decoded(repeated_string) + self._len_decoded(remaining_string)
+    return len_before_repeat_command + repeat_count * self._len_decoded(repeated_string) + self._len_decoded(remaining_string)
+
+  def _find_first_repeat_command(self, coded):
+    start = coded.find('(')
+    if start == -1:
+      return (-1, -1)
+    end = coded.find(')', start + 1)
+    return (start, end)
 
 def _parse_repeat_command(string):
   string_length_string, repeat_count_string = string.split('x')

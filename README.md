@@ -12,9 +12,9 @@ A `Screen` object stores the screen state and provides an interface for its mani
 
 ## [Day 9](http://adventofcode.com/2016/day/9)
 
-We are given a compressed input and asked to determine the length of the output. The input is compressed by a run-length scheme. A string like `(mxn)` in the input means the `m` bytes following the `)` should be repeated `n` times. In the first part of the puzzle recursive repeats are ignored: if a repeat sequence appears in a repeated string then we ignore the repeat sequence. In the second part recursive repeats are allowed.
+We are given a compressed input and asked to determine the length of the output. The input is compressed by a run-length scheme. A string like `(mxn)` in the input means the `m` bytes following the `)` should be repeated `n` times in the output. In the first part of the puzzle recursive repeats are ignored: if a repeat sequence appears in a repeated string then we treat the repeat sequence like normal bytes. In the second part recursive repeats are allowed.
 
-I solved part 1 by decoding the input. For part 2 the output is ~10 GB, so we need to calculate the length of the decoded text without actually decoding it. A recursive approach works.
+I solved part 1 by decoding the input. For part 2 the problem description suggests we calculate the length of the decoded text without actually decoding it. A recursive approach works.
 
 # Example
 
@@ -23,7 +23,7 @@ I tested these with Python 2.7.8. Run them like:
     cd day01
     python main.py
 
-or for the unit tests:
+Each solution has unit tests:
 
     cd day01
     python -m unittest discover

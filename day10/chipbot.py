@@ -56,12 +56,9 @@ class Net(object):
       return ValueError('Unknown type: {}'.format(type))
 
   def get_bot(self, bot_number):
-    try:
-      return self._bots[bot_number]
-    except KeyError:
-      bot = Bot(bot_number)
-      self._bots[bot_number] = bot
-      return bot
+    if bot_number not in self._bots:
+      self._bots[bot_number] = Bot(bot_number)
+    return self._bots[bot_number]
 
   def bot_count(self):
     return len(self._bots)
@@ -70,12 +67,9 @@ class Net(object):
     return self._bots.values()
 
   def get_output(self, output_number):
-    try:
-      return self._outputs[output_number]
-    except KeyError:
-      output = Output(output_number)
-      self._outputs[output_number] = output
-      return output
+    if output_number not in self._outputs:
+      self._outputs[output_number] = Output(output_number)
+    return self._outputs[output_number]
 
   def output_count(self):
     return len(self._outputs)

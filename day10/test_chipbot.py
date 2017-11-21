@@ -63,12 +63,16 @@ class TestParser(unittest.TestCase):
     parser = chipbot.Parser(input)
     value_instructions = parser.value_instructions()
     give_instructions = parser.give_instructions()
-    self.assertTrue(isinstance(value_instructions[0], chipbot.ValueInstruction))
-    self.assertTrue(isinstance(give_instructions[0], chipbot.GiveInstruction))
+    self.assertInstance(value_instructions[0], chipbot.ValueInstruction)
+    self.assertInstance(give_instructions[0], chipbot.GiveInstruction)
+
+  def assertInstance(self, obj, cls):
+    self.assertTrue(isinstance(obj, cls))
 
 class TestValueInstruction(unittest.TestCase):
   def setUp(self):
-    self.instruction = chipbot.ValueInstruction.from_args(['0', 'goes', 'to', 'bot', '1'])
+    args = ['0', 'goes', 'to', 'bot', '1']
+    self.instruction = chipbot.ValueInstruction.from_args(args)
     self.net = chipbot.Net()
 
   def test_execute(self):
@@ -78,7 +82,8 @@ class TestValueInstruction(unittest.TestCase):
 
 class TestGiveInstruction(unittest.TestCase):
   def setUp(self):
-    self.instruction = chipbot.GiveInstruction.from_args(['2', 'gives', 'low', 'to', 'bot', '1', 'and', 'high', 'to', 'output', '0'])
+    args = ['2', 'gives', 'low', 'to', 'bot', '1', 'and', 'high', 'to', 'output', '0']
+    self.instruction = chipbot.GiveInstruction.from_args(args)
     self.net = chipbot.Net()
 
   def test_execute(self):
